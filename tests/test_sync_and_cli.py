@@ -56,6 +56,11 @@ def test_google_calendar_build_event_body() -> None:
     assert "Hosted by: Software Engineering and Computer Science Society (SCS) (@scsconcordia)" in body["description"]
     assert "Registration: https://scs.concordia.ca/rsvp" in body["description"]
     assert "Source Instagram Post: https://www.instagram.com/p/SCS1/" in body["description"]
+    assert "colorId" not in body
+
+    colored_event = event.model_copy(update={"color_id": "9"})
+    body_colored = sync.build_event_body(colored_event)
+    assert body_colored["colorId"] == "9"
 
     # Room already present in location should not be duplicated.
     event_with_room_in_loc = event.model_copy(
@@ -107,6 +112,7 @@ def test_google_calendar_create_and_update_calls() -> None:
     fake_service = MagicMock()
     fake_service.events.return_value.insert.return_value.execute.return_value = {"id": "gcal-123"}
     fake_service.events.return_value.update.return_value.execute.return_value = {"id": "gcal-123"}
+    fake_service.events.return_value.patch.return_value.execute.return_value = {"id": "gcal-123"}
 
     sync = GoogleCalendarSync(
         calendar_id="cal-concordia@group.calendar.google.com",
@@ -119,6 +125,7 @@ def test_google_calendar_create_and_update_calls() -> None:
         room="MB S2.330",
         club_handle="jmcc_jmsb",
         source_post_id="p-jmcc-1",
+        color_id="3",
     )
 
     created_id = sync.create_event(event)
@@ -126,12 +133,20 @@ def test_google_calendar_create_and_update_calls() -> None:
     insert_kwargs = fake_service.events.return_value.insert.call_args.kwargs
     assert insert_kwargs["calendarId"] == "cal-concordia@group.calendar.google.com"
     assert insert_kwargs["body"]["summary"] == "JMSB Case Info Session"
+    assert insert_kwargs["body"]["colorId"] == "3"
 
     updated_id = sync.update_event("gcal-123", event)
     assert updated_id == "gcal-123"
     update_kwargs = fake_service.events.return_value.update.call_args.kwargs
     assert update_kwargs["calendarId"] == "cal-concordia@group.calendar.google.com"
     assert update_kwargs["eventId"] == "gcal-123"
+
+    patched_id = sync.patch_event_color("gcal-123", "9")
+    assert patched_id == "gcal-123"
+    patch_kwargs = fake_service.events.return_value.patch.call_args.kwargs
+    assert patch_kwargs["calendarId"] == "cal-concordia@group.calendar.google.com"
+    assert patch_kwargs["eventId"] == "gcal-123"
+    assert patch_kwargs["body"] == {"colorId": "9"}
 
 
 # ---------------------------------------------------------------------------
@@ -684,10 +699,187 @@ def test_save_posts_and_from_posts_skip_apify_without_token(
     )
 
     rc = main_module.main(
-        ["--dry-run", "--from-posts", str(cache_path), "--limit", "1", "--db-path", str(db_path)]
+        [
+            "--dry-run",
+            "--from-posts",
+            str(cache_path),
+            "--clubs-file",
+            str(tmp_path / "nonexistent_clubs.json"),
+            "--limit",
+            "1",
+            "--db-path",
+            str(db_path),
+        ]
     )
     assert rc == 0
     assert not db_path.exists()
+
+
+def test_sync_events_attaches_color_id_from_clubs_on_from_posts(tmp_path: Path) -> None:
+    clubs_path = tmp_path / "clubs.json"
+    clubs_path.write_text(
+        json.dumps([{"name": "FISA", "handle": "fisajmsb", "faculty": "JMSB", "color_id": "9"}]),
+        encoding="utf-8",
+    )
+    cache_path = tmp_path / "cached_posts.json"
+    cached_post = InstagramPost(
+        post_id="cached-fisa-1",
+        club_handle="fisajmsb",
+        club_name="FISA",
+        caption="Stock Pitch Night",
+        url="https://www.instagram.com/p/CF1/",
+        timestamp=datetime(2026, 11, 22, 12, 0, tzinfo=MONTREAL_TZ),
+    )
+    cache_path.write_text(
+        json.dumps([cached_post.model_dump(mode="json")]),
+        encoding="utf-8",
+    )
+
+    extracted = ExtractedEvent(
+        title="Stock Pitch Night",
+        start_time=datetime(2026, 11, 27, 18, 0, tzinfo=MONTREAL_TZ),
+        room="MB S2.330",
+        club_handle="fisajmsb",
+        source_post_id="cached-fisa-1",
+        color_id=None,
+    )
+    calendar = _FakeCalendar()
+    settings = Settings(
+        gemini_api_key="gem",
+        apify_token="",
+        google_calendar_id="cal@group.calendar.google.com",
+        google_service_account_json="./service-account.json",
+        clubs_path=clubs_path,
+        db_path=tmp_path / "state" / "events.db",
+    )
+
+    stats = main_module.sync_events(
+        settings=settings,
+        dry_run=False,
+        from_posts=cache_path,
+        extractor=_FakeExtractor({"cached-fisa-1": [extracted]}),
+        calendar=calendar,
+    )
+    assert stats["created"] == 1
+    assert len(calendar.created) == 1
+    assert calendar.created[0][1].color_id == "9"
+
+
+def test_sync_colors_patches_existing_events_without_apify_or_gemini(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+    capsys: pytest.CaptureFixture[str],
+) -> None:
+    clubs_path = tmp_path / "clubs.json"
+    clubs_path.write_text(
+        json.dumps(
+            [
+                {"name": "JMIBA", "handle": "jmiba_jmsb", "faculty": "JMSB", "color_id": "1"},
+                {"name": "JMIS", "handle": "jmis.ca", "faculty": "JMSB", "color_id": "9"},
+                {"name": "NoColorClub", "handle": "nocolor", "faculty": "General"},
+            ]
+        ),
+        encoding="utf-8",
+    )
+    db_path = tmp_path / "state" / "events.db"
+
+    ev_jmiba = ExtractedEvent(
+        title="Nextpatriates Conference",
+        start_time=datetime(2026, 11, 24, 18, 0, tzinfo=MONTREAL_TZ),
+        club_handle="jmiba_jmsb",
+        source_post_id="p-1",
+    )
+    ev_jmis = ExtractedEvent(
+        title="Investment Banking Speaker Series",
+        start_time=datetime(2026, 11, 25, 20, 30, tzinfo=MONTREAL_TZ),
+        club_handle="jmis.ca",
+        source_post_id="p-2",
+    )
+    ev_nocolor = ExtractedEvent(
+        title="Uncolored Event",
+        start_time=datetime(2026, 11, 26, 18, 0, tzinfo=MONTREAL_TZ),
+        club_handle="nocolor",
+        source_post_id="p-3",
+    )
+    with EventStateStore(db_path) as store:
+        store.upsert_synced_event(ev_jmiba, "gcal-1")
+        store.upsert_synced_event(ev_jmis, "gcal-2")
+        store.upsert_synced_event(ev_nocolor, "gcal-3")
+
+    def _forbid(*args: Any, **kwargs: Any) -> Any:
+        raise AssertionError("Apify/Gemini must NOT be instantiated during --sync-colors")
+
+    monkeypatch.setattr(main_module, "ApifyInstagramScraper", _forbid)
+    monkeypatch.setattr(main_module, "GeminiEventExtractor", _forbid)
+
+    settings = Settings(
+        gemini_api_key="",
+        apify_token="",
+        google_calendar_id="cal@group.calendar.google.com",
+        google_service_account_json="./service-account.json",
+        clubs_path=clubs_path,
+        db_path=db_path,
+    )
+
+    # 1. Dry-run --sync-colors does NOT instantiate GoogleCalendarSync
+    monkeypatch.setattr(main_module, "GoogleCalendarSync", _forbid)
+    dry_stats = main_module.sync_colors(settings=settings, dry_run=True)
+    dry_out = capsys.readouterr().out
+    assert dry_stats == {"events_checked": 3, "patched": 2, "skipped": 1, "errors": 0}
+    assert "[COLOR] Nextpatriates Conference" in dry_out and "colorId=1" in dry_out
+    assert "[COLOR] Investment Banking Speaker Series" in dry_out and "colorId=9" in dry_out
+    assert "[SKIP-COLOR] Uncolored Event" in dry_out
+
+    # 2. Live sync_colors patches existing events via Calendar events().patch(...)
+    fake_service = MagicMock()
+    fake_service.events.return_value.patch.return_value.execute.side_effect = [
+        {"id": "gcal-1"},
+        {"id": "gcal-2"},
+    ]
+    cal = GoogleCalendarSync(
+        calendar_id="cal@group.calendar.google.com",
+        service_account_json="{}",
+        service=fake_service,
+    )
+    live_stats = main_module.sync_colors(settings=settings, dry_run=False, calendar=cal)
+    capsys.readouterr()
+    assert live_stats == {"events_checked": 3, "patched": 2, "skipped": 1, "errors": 0}
+    patch_calls = fake_service.events.return_value.patch.call_args_list
+    assert len(patch_calls) == 2
+    assert patch_calls[0].kwargs == {
+        "calendarId": "cal@group.calendar.google.com",
+        "eventId": "gcal-1",
+        "body": {"colorId": "1"},
+    }
+    assert patch_calls[1].kwargs == {
+        "calendarId": "cal@group.calendar.google.com",
+        "eventId": "gcal-2",
+        "body": {"colorId": "9"},
+    }
+
+    # 3. CLI main(["--sync-colors", "--dry-run", ...]) succeeds with ZERO env credentials
+    for var in (
+        "GEMINI_API_KEY",
+        "APIFY_TOKEN",
+        "GOOGLE_CALENDAR_ID",
+        "GOOGLE_SERVICE_ACCOUNT_JSON",
+    ):
+        monkeypatch.delenv(var, raising=False)
+    monkeypatch.setattr(main_module, "load_dotenv", lambda *a, **k: False)
+    monkeypatch.setattr("config.load_dotenv", lambda *a, **k: False)
+
+    rc = main_module.main(
+        [
+            "--sync-colors",
+            "--dry-run",
+            "--clubs-file",
+            str(clubs_path),
+            "--db-path",
+            str(db_path),
+        ]
+    )
+    assert rc == 0
+
 
 
 

@@ -3,120 +3,140 @@
     "name": "CASA-JMSB",
     "handle": "casajmsb",
     "faculty": "JMSB",
-    "source": "manual"
+    "source": "manual",
+    "color_id": "6"
   },
   {
     "name": "JMAS",
     "handle": "jmasofficial",
     "faculty": "JMSB",
-    "source": "manual"
+    "source": "manual",
+    "color_id": "7"
   },
   {
     "name": "EngComm",
     "handle": "engcommofficial",
     "faculty": "JMSB / Gina Cody",
-    "source": "manual"
+    "source": "manual",
+    "color_id": "3"
   },
   {
     "name": "BIA JMSB",
     "handle": "biajmsb",
     "faculty": "JMSB",
-    "source": "manual"
+    "source": "manual",
+    "color_id": "1"
   },
   {
     "name": "Concordia Relay For Life",
     "handle": "concordiarelay",
     "faculty": "General",
-    "source": "manual"
+    "source": "manual",
+    "color_id": "4"
   },
   {
     "name": "CBV Institute",
     "handle": "cbvinstitute",
     "faculty": "External",
-    "source": "manual"
+    "source": "manual",
+    "color_id": "7"
   },
   {
     "name": "Concordia Real Estate Club",
     "handle": "concordiarealestateclub",
     "faculty": "JMSB",
-    "source": "manual"
+    "source": "manual",
+    "color_id": "10"
   },
   {
     "name": "FISA",
     "handle": "fisajmsb",
     "faculty": "JMSB",
-    "source": "manual"
+    "source": "manual",
+    "color_id": "9"
   },
   {
     "name": "JMCC",
     "handle": "jmcconline",
     "faculty": "JMSB",
-    "source": "manual"
+    "source": "manual",
+    "color_id": "3"
   },
   {
     "name": "REIMI",
     "handle": "reimijmsb",
     "faculty": "JMSB",
-    "source": "manual"
+    "source": "manual",
+    "color_id": "10"
   },
   {
     "name": "MCC",
     "handle": "mcconcordia",
     "faculty": "JMSB",
-    "source": "manual"
+    "source": "manual",
+    "color_id": "1"
   },
   {
     "name": "QUARCC",
     "handle": "quarcc.mtl",
     "faculty": "JMSB",
-    "source": "manual"
+    "source": "manual",
+    "color_id": "9"
   },
   {
     "name": "JMTL",
     "handle": "jmtl_concordia",
     "faculty": "JMSB",
-    "source": "manual"
+    "source": "manual",
+    "color_id": "9"
   },
   {
     "name": "JHMA",
     "handle": "jhmajmsb",
     "faculty": "JMSB",
-    "source": "manual"
+    "source": "manual",
+    "color_id": "1"
   },
   {
     "name": "JMIBA",
     "handle": "jmiba_jmsb",
     "faculty": "JMSB",
-    "source": "manual"
+    "source": "manual",
+    "color_id": "1"
   },
   {
     "name": "JMSM",
     "handle": "jmsmcommittee",
     "faculty": "JMSB",
-    "source": "manual"
+    "source": "manual",
+    "color_id": "1"
   },
   {
     "name": "JMUCC",
     "handle": "jmuccofficial",
     "faculty": "JMSB",
-    "source": "manual"
+    "source": "manual",
+    "color_id": "3"
   },
   {
     "name": "CASA X",
     "handle": "jmsbcasax",
     "faculty": "JMSB",
-    "source": "manual"
+    "source": "manual",
+    "color_id": "6"
   },
   {
     "name": "CASA Cares",
     "handle": "jmsbcasacares",
     "faculty": "JMSB",
-    "source": "manual"
+    "source": "manual",
+    "color_id": "4"
   },
   {
     "name": "JMIS",
     "handle": "jmis.ca",
     "faculty": "JMSB",
-    "source": "manual"
+    "source": "manual",
+    "color_id": "9"
   }
 ]

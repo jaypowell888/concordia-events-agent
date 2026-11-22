@@ -14,7 +14,7 @@ from dotenv import load_dotenv
 from calendar_sync import GoogleCalendarSync
 from config import Settings, load_settings
 from extractor import GeminiEventExtractor
-from models import InstagramPost
+from models import Club, InstagramPost
 from scraper import ApifyInstagramScraper, load_clubs
 from state_store import EventStateStore
 
@@ -108,6 +108,11 @@ def build_arg_parser() -> argparse.ArgumentParser:
         action="store_true",
         help="Re-scan posts even if their post ID was already recorded in the state database.",
     )
+    parser.add_argument(
+        "--sync-colors",
+        action="store_true",
+        help="Patch Google Calendar colorId on existing synced events using clubs file colors (no Apify or Gemini calls).",
+    )
     return parser
 
 
@@ -130,13 +135,19 @@ def sync_events(
     if max_clubs is not None and max_clubs < 0:
         raise ValueError("--max-clubs must be a non-negative integer.")
 
-    clubs: list[Any] = []
+    clubs: list[Club] = []
+    clubs_by_handle: dict[str, Club] = {}
     cached_posts: list[InstagramPost] | None = None
     active_scraper: Any | None = None
     if from_posts is not None:
         cached_posts = _load_posts_from_file(from_posts)
+        if Path(settings.clubs_path).exists():
+            clubs_by_handle = {
+                club.handle.lower(): club for club in load_clubs(settings.clubs_path)
+            }
     else:
         clubs = load_clubs(settings.clubs_path)
+        clubs_by_handle = {club.handle.lower(): club for club in clubs}
         if max_clubs is not None:
             clubs = clubs[:max_clubs]
         active_scraper = (
@@ -219,6 +230,14 @@ def sync_events(
 
             for event in valid_events:
                 try:
+                    if not event.color_id:
+                        lookup_handle = (
+                            (event.club_handle or post.club_handle).strip().lstrip("@").lower()
+                        )
+                        matched_club = clubs_by_handle.get(lookup_handle)
+                        if matched_club is not None and matched_club.color_id:
+                            event = event.model_copy(update={"color_id": matched_club.color_id})
+
                     existing = (
                         active_store.get_synced_event(event.fingerprint())
                         if active_store is not None
@@ -276,6 +295,90 @@ def sync_events(
     return stats
 
 
+def sync_colors(
+    settings: Settings,
+    dry_run: bool = False,
+    calendar: Any | None = None,
+    store: EventStateStore | None = None,
+) -> dict[str, int]:
+    """Patch Google Calendar colorId on existing synced events without calling Apify or Gemini."""
+    clubs = load_clubs(settings.clubs_path)
+    color_by_handle: dict[str, str] = {
+        club.handle.lower(): club.color_id
+        for club in clubs
+        if club.color_id
+    }
+
+    owns_store = False
+    active_store = store
+    if active_store is None:
+        active_store = EventStateStore(settings.db_path, read_only=True)
+        owns_store = True
+
+    active_calendar = calendar
+    if not dry_run and active_calendar is None:
+        active_calendar = GoogleCalendarSync(
+            calendar_id=settings.google_calendar_id,
+            service_account_json=settings.google_service_account_json,
+        )
+
+    stats: dict[str, int] = {
+        "events_checked": 0,
+        "patched": 0,
+        "skipped": 0,
+        "errors": 0,
+    }
+
+    try:
+        synced_events = active_store.list_synced_events_with_club()
+        for row in synced_events:
+            stats["events_checked"] += 1
+            club_handle = str(row.get("club_handle") or "").strip().lstrip("@").lower()
+            title = str(row.get("title") or "")
+            start_time = str(row.get("start_time") or "")
+            google_event_id = str(row.get("google_event_id") or "")
+
+            color_id = color_by_handle.get(club_handle)
+            if not color_id:
+                handle_display = f"@{club_handle}" if club_handle else "@unknown"
+                print(f"[SKIP-COLOR] {title} | {start_time} | {handle_display}")
+                stats["skipped"] += 1
+                continue
+
+            print(f"[COLOR] {title} | {start_time} | colorId={color_id} | @{club_handle}")
+            if not dry_run:
+                try:
+                    active_calendar.patch_event_color(google_event_id, color_id)
+                except Exception as exc:
+                    logger.warning(
+                        "Failed to patch colorId=%s on event '%s' (%s): %s",
+                        color_id,
+                        title,
+                        google_event_id,
+                        exc,
+                    )
+                    print(
+                        f"[ERROR] Color patch failed for event '{title}' ({google_event_id}): {exc}",
+                        file=sys.stderr,
+                    )
+                    stats["errors"] += 1
+                    continue
+            stats["patched"] += 1
+    finally:
+        if owns_store and active_store is not None:
+            active_store.close()
+
+    mode_label = "DRY RUN" if dry_run else "LIVE"
+    print(
+        f"[{mode_label} COLORS] Summary: "
+        f"events_checked={stats['events_checked']}, "
+        f"patched={stats['patched']}, "
+        f"skipped={stats['skipped']}, "
+        f"errors={stats['errors']}"
+    )
+    return stats
+
+
 def main(argv: list[str] | None = None) -> int:
     """CLI entry point."""
     load_dotenv()
@@ -288,10 +391,17 @@ def main(argv: list[str] | None = None) -> int:
             clubs_path=args.clubs_file,
             db_path=args.db_path,
         )
-        settings.validate_for_run(
-            dry_run=args.dry_run,
-            require_apify=(args.from_posts is None),
-        )
+        if args.sync_colors:
+            settings.validate_for_run(
+                dry_run=args.dry_run,
+                require_apify=False,
+                require_gemini=False,
+            )
+        else:
+            settings.validate_for_run(
+                dry_run=args.dry_run,
+                require_apify=(args.from_posts is None),
+            )
     except ValueError as exc:
         print(
             f"Configuration error: {exc}\n"
@@ -301,15 +411,21 @@ def main(argv: list[str] | None = None) -> int:
         return 1
 
     try:
-        sync_events(
-            settings=settings,
-            dry_run=args.dry_run,
-            limit=args.limit,
-            reprocess_posts=args.reprocess_posts,
-            max_clubs=args.max_clubs,
-            save_posts=args.save_posts,
-            from_posts=args.from_posts,
-        )
+        if args.sync_colors:
+            sync_colors(
+                settings=settings,
+                dry_run=args.dry_run,
+            )
+        else:
+            sync_events(
+                settings=settings,
+                dry_run=args.dry_run,
+                limit=args.limit,
+                reprocess_posts=args.reprocess_posts,
+                max_clubs=args.max_clubs,
+                save_posts=args.save_posts,
+                from_posts=args.from_posts,
+            )
     except FileNotFoundError as exc:
         print(f"File error: {exc}", file=sys.stderr)
         return 1

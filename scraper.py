@@ -232,6 +232,7 @@ class ApifyInstagramScraper:
             image_url=image_url,
             image_urls=image_urls,
             timestamp=timestamp,
+            color_id=matched_club.color_id if matched_club is not None else None,
         )
 
     def fetch_recent_posts(

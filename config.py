@@ -39,7 +39,10 @@ class Settings(BaseModel):
     db_path: Path = DEFAULT_DB_PATH
 
     def validate_for_run(
-        self, dry_run: bool = False, require_apify: bool = True
+        self,
+        dry_run: bool = False,
+        require_apify: bool = True,
+        require_gemini: bool = True,
     ) -> None:
         """Validate that required credentials are present for the selected run mode.
 
@@ -47,7 +50,7 @@ class Settings(BaseModel):
             ValueError: Lists any missing required environment variables.
         """
         missing: list[str] = []
-        if not self.gemini_api_key.strip():
+        if require_gemini and not self.gemini_api_key.strip():
             missing.append("GEMINI_API_KEY")
         if require_apify and not self.apify_token.strip():
             missing.append("APIFY_TOKEN")

@@ -304,7 +304,7 @@ def test_apify_scraper_filters_by_lookback_and_normalizes() -> None:
             return FakeDatasetClient()
 
     clubs = [
-        Club(name="CASA-JMSB", handle="casajmsb", faculty="JMSB"),
+        Club(name="CASA-JMSB", handle="casajmsb", faculty="JMSB", color_id="6"),
         Club(name="SCS Concordia", handle="scsconcordia", faculty="Gina Cody"),
     ]
     scraper = ApifyInstagramScraper(api_token="fake-token", client=FakeApifyClient())
@@ -321,10 +321,12 @@ def test_apify_scraper_filters_by_lookback_and_normalizes() -> None:
     assert [p.post_id for p in posts] == ["post-recent-1", "post-recent-2"]
     assert posts[0].club_handle == "casajmsb"
     assert posts[0].club_name == "CASA-JMSB"
+    assert posts[0].color_id == "6"
     assert posts[0].image_url == "https://cdn.example.com/poster1.jpg"
     assert posts[0].image_urls == ["https://cdn.example.com/poster1.jpg"]
     assert posts[0].timestamp.tzinfo == MONTREAL_TZ
     assert posts[1].club_name == "SCS Concordia"
+    assert posts[1].color_id is None
 
 
 def test_apify_scraper_extracts_deduped_carousel_image_urls() -> None:
@@ -469,6 +471,7 @@ def test_gemini_extractor_parses_events_filters_non_events_and_attaches_metadata
         caption="Join us this Thursday at 6 PM in MB S2.330! RSVP: https://eventbrite.ca/e/jmsb-finance-night",
         url="https://www.instagram.com/p/FIN42/",
         image_url="https://cdn.example.com/flyer.jpg",
+        color_id="9",
         timestamp=datetime(2026, 11, 23, 14, 0, tzinfo=MONTREAL_TZ),
     )
 
@@ -502,6 +505,7 @@ def test_gemini_extractor_parses_events_filters_non_events_and_attaches_metadata
     assert ev.registration_url == "https://eventbrite.ca/e/jmsb-finance-night"
     assert ev.club_name == "Finance and Investment Student Association (FISA)"
     assert ev.club_handle == "fisajmsb"
+    assert ev.color_id == "9"
     assert ev.source_post_id == "ig-post-42"
     assert ev.source_post_url == "https://www.instagram.com/p/FIN42/"
 

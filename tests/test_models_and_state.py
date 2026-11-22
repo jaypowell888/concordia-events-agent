@@ -199,6 +199,30 @@ def test_clubs_path_env_workflow_gitignore_and_my_clubs_json(
     ]
     assert [(c.name, c.handle) for c in clubs] == expected
 
+    expected_colors = {
+        "fisajmsb": "9",
+        "jmis.ca": "9",
+        "quarcc.mtl": "9",
+        "jmtl_concordia": "9",
+        "jmasofficial": "7",
+        "cbvinstitute": "7",
+        "concordiarealestateclub": "10",
+        "reimijmsb": "10",
+        "jmcconline": "3",
+        "jmuccofficial": "3",
+        "engcommofficial": "3",
+        "mcconcordia": "1",
+        "biajmsb": "1",
+        "jhmajmsb": "1",
+        "jmiba_jmsb": "1",
+        "jmsmcommittee": "1",
+        "concordiarelay": "4",
+        "jmsbcasacares": "4",
+        "casajmsb": "6",
+        "jmsbcasax": "6",
+    }
+    assert {c.handle: c.color_id for c in clubs} == expected_colors
+
 
 def test_validate_for_run_dry_run_vs_live() -> None:
     empty = Settings(google_service_account_json="")
@@ -234,6 +258,18 @@ def test_validate_for_run_dry_run_vs_live() -> None:
     no_apify.validate_for_run(dry_run=True, require_apify=False)
     with pytest.raises(ValueError, match="APIFY_TOKEN"):
         no_apify.validate_for_run(dry_run=True, require_apify=True)
+
+    # require_apify=False, require_gemini=False supports --sync-colors without Apify or Gemini
+    colors_only = Settings(
+        gemini_api_key="",
+        apify_token="",
+        google_calendar_id="cal@group.calendar.google.com",
+        google_service_account_json="./service-account.json",
+    )
+    colors_only.validate_for_run(dry_run=False, require_apify=False, require_gemini=False)
+    Settings(google_service_account_json="").validate_for_run(
+        dry_run=True, require_apify=False, require_gemini=False
+    )
 
 
 # ---------------------------------------------------------------------------
@@ -444,3 +480,104 @@ def test_state_store_read_only_missing_file_raises(tmp_path: Path) -> None:
     missing = tmp_path / "does_not_exist" / "events.db"
     with pytest.raises(FileNotFoundError):
         EventStateStore(missing, read_only=True)
+
+
+def test_color_id_validation_and_content_hash_sensitivity() -> None:
+    # Valid "1".."11", whitespace stripped, empty -> None
+    c1 = Club(name="FISA", handle="fisajmsb", color_id=" 9 ")
+    assert c1.color_id == "9"
+    c2 = Club(name="FISA", handle="fisajmsb", color_id="   ")
+    assert c2.color_id is None
+
+    for bad in ("0", "12", "blue", "-1"):
+        with pytest.raises(ValidationError):
+            Club(name="Bad", handle="badclub", color_id=bad)
+        with pytest.raises(ValidationError):
+            ExtractedEvent(
+                title="Bad Color Event",
+                start_time=datetime(2026, 11, 25, 18, 0, tzinfo=MONTREAL_TZ),
+                color_id=bad,
+            )
+
+    ev_none = ExtractedEvent(
+        title="Color Sensitivity Event",
+        start_time=datetime(2026, 11, 25, 18, 0, tzinfo=MONTREAL_TZ),
+        source_post_id="p-color-1",
+    )
+    ev_blue = ev_none.model_copy(update={"color_id": "9"})
+    ev_orange = ev_none.model_copy(update={"color_id": "6"})
+    assert ev_none.content_hash() != ev_blue.content_hash()
+    assert ev_blue.content_hash() != ev_orange.content_hash()
+
+
+def test_state_store_list_synced_events_with_club_migrated_and_legacy(tmp_path: Path) -> None:
+    import sqlite3
+
+    # 1. Legacy DB WITHOUT synced_events.club_handle column
+    legacy_db = tmp_path / "legacy" / "events.db"
+    legacy_db.parent.mkdir(parents=True, exist_ok=True)
+    conn = sqlite3.connect(legacy_db)
+    with conn:
+        conn.execute(
+            """
+            CREATE TABLE processed_posts (
+                post_id TEXT PRIMARY KEY,
+                club_handle TEXT NOT NULL,
+                events_found INTEGER NOT NULL,
+                processed_at TEXT NOT NULL
+            )
+            """
+        )
+        conn.execute(
+            """
+            CREATE TABLE synced_events (
+                fingerprint TEXT PRIMARY KEY,
+                google_event_id TEXT NOT NULL,
+                content_hash TEXT NOT NULL,
+                source_post_id TEXT NOT NULL,
+                title TEXT NOT NULL,
+                start_time TEXT NOT NULL,
+                updated_at TEXT NOT NULL
+            )
+            """
+        )
+        conn.execute(
+            "INSERT INTO processed_posts VALUES (?, ?, ?, ?)",
+            ("post-legacy-1", "jmiba_jmsb", 1, "2026-11-22T17:00:00-05:00"),
+        )
+        conn.execute(
+            "INSERT INTO synced_events VALUES (?, ?, ?, ?, ?, ?, ?)",
+            (
+                "fp-1",
+                "gcal-legacy-1",
+                "hash-1",
+                "post-legacy-1",
+                "Nextpatriates Conference",
+                "2026-11-24T18:00:00-05:00",
+                "2026-11-22T17:00:00-05:00",
+            ),
+        )
+    conn.close()
+
+    # Read-only mode works on legacy DB via LEFT JOIN processed_posts
+    with EventStateStore(legacy_db, read_only=True) as ro_store:
+        rows = ro_store.list_synced_events_with_club()
+        assert len(rows) == 1
+        assert rows[0]["google_event_id"] == "gcal-legacy-1"
+        assert rows[0]["club_handle"] == "jmiba_jmsb"
+
+    # Opening writable migrates schema cleanly without losing data and persists club_handle
+    ev2 = ExtractedEvent(
+        title="Investment Banking Speaker Series",
+        start_time=datetime(2026, 11, 25, 20, 30, tzinfo=MONTREAL_TZ),
+        club_handle="jmis.ca",
+        source_post_id="post-new-2",
+        color_id="9",
+    )
+    with EventStateStore(legacy_db) as rw_store:
+        rw_store.upsert_synced_event(ev2, "gcal-new-2")
+        rows_after = rw_store.list_synced_events_with_club()
+        assert len(rows_after) == 2
+        assert [r["google_event_id"] for r in rows_after] == ["gcal-legacy-1", "gcal-new-2"]
+        assert [r["club_handle"] for r in rows_after] == ["jmiba_jmsb", "jmis.ca"]
+

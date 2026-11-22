@@ -80,6 +80,11 @@ class GoogleCalendarSync:
             credentials = _load_service_account_credentials(service_account_json)
             self._service = build("calendar", "v3", credentials=credentials, cache_discovery=False)
 
+    @property
+    def service(self) -> Any:
+        """Return the underlying Google Calendar API service client."""
+        return self._service
+
     def build_event_body(self, event: ExtractedEvent) -> dict[str, Any]:
         """Convert an ExtractedEvent into a Google Calendar API v3 event payload."""
         start_dt = _to_montreal_datetime(event.start_time)
@@ -113,7 +118,7 @@ class GoogleCalendarSync:
         if metadata_lines:
             description_parts.append("\n".join(metadata_lines))
 
-        return {
+        body: dict[str, Any] = {
             "summary": event.title.strip(),
             "location": _format_location(event.location, event.room),
             "description": "\n\n".join(description_parts),
@@ -126,6 +131,9 @@ class GoogleCalendarSync:
                 "timeZone": CALENDAR_TIMEZONE,
             },
         }
+        if event.color_id:
+            body["colorId"] = event.color_id
+        return body
 
     def create_event(self, event: ExtractedEvent) -> str:
         """Insert a new event into Google Calendar and return its created Google event ID."""
@@ -146,6 +154,21 @@ class GoogleCalendarSync:
         updated = (
             self._service.events()
             .update(calendarId=self.calendar_id, eventId=google_event_id, body=body)
+            .execute()
+        )
+        if isinstance(updated, dict) and updated.get("id"):
+            return str(updated["id"])
+        return google_event_id
+
+    def patch_event_color(self, google_event_id: str, color_id: str) -> str:
+        """Patch only the colorId of an existing Google Calendar event."""
+        updated = (
+            self._service.events()
+            .patch(
+                calendarId=self.calendar_id,
+                eventId=google_event_id,
+                body={"colorId": color_id},
+            )
             .execute()
         )
         if isinstance(updated, dict) and updated.get("id"):

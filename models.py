@@ -12,6 +12,9 @@ from pydantic import BaseModel, Field, field_validator, model_validator
 from config import MONTREAL_TZ
 
 
+VALID_CALENDAR_COLOR_IDS = frozenset(str(i) for i in range(1, 12))
+
+
 def _normalize_handle(value: Any, *, allow_empty: bool = False) -> str:
     """Normalize an Instagram handle: strip whitespace, strip leading '@', lowercase."""
     if not isinstance(value, str):
@@ -22,6 +25,22 @@ def _normalize_handle(value: Any, *, allow_empty: bool = False) -> str:
     return normalized
 
 
+def _normalize_color_id(value: Any) -> str | None:
+    """Validate and normalize an optional Google Calendar colorId ('1' through '11')."""
+    if value is None:
+        return None
+    if not isinstance(value, str):
+        raise ValueError("Google Calendar color_id must be a string '1' through '11'")
+    normalized = value.strip()
+    if not normalized:
+        return None
+    if normalized not in VALID_CALENDAR_COLOR_IDS:
+        raise ValueError(
+            f"Invalid Google Calendar color_id {value!r}; must be '1' through '11'"
+        )
+    return normalized
+
+
 class Club(BaseModel):
     """A Concordia or JMSB student club tracked by its Instagram handle."""
 
@@ -29,6 +48,7 @@ class Club(BaseModel):
     handle: str
     faculty: str = "General"
     source: str = "seed"
+    color_id: str | None = None
 
     @field_validator("name", mode="before")
     @classmethod
@@ -41,6 +61,11 @@ class Club(BaseModel):
     @classmethod
     def _clean_handle(cls, value: Any) -> str:
         return _normalize_handle(value, allow_empty=False)
+
+    @field_validator("color_id", mode="before")
+    @classmethod
+    def _clean_color_id(cls, value: Any) -> str | None:
+        return _normalize_color_id(value)
 
 
 class InstagramPost(BaseModel):
@@ -55,11 +80,17 @@ class InstagramPost(BaseModel):
     image_url: str | None = None
     image_urls: list[str] = Field(default_factory=list)
     timestamp: datetime
+    color_id: str | None = None
 
     @field_validator("club_handle", mode="before")
     @classmethod
     def _clean_club_handle(cls, value: Any) -> str:
         return _normalize_handle(value, allow_empty=False)
+
+    @field_validator("color_id", mode="before")
+    @classmethod
+    def _clean_color_id(cls, value: Any) -> str | None:
+        return _normalize_color_id(value)
 
     @field_validator("timestamp", mode="after")
     @classmethod
@@ -84,6 +115,7 @@ class ExtractedEvent(BaseModel):
     club_handle: str = ""
     source_post_id: str = ""
     source_post_url: str = ""
+    color_id: str | None = None
 
     @field_validator("club_handle", mode="before")
     @classmethod
@@ -91,6 +123,11 @@ class ExtractedEvent(BaseModel):
         if value is None:
             return ""
         return _normalize_handle(value, allow_empty=True)
+
+    @field_validator("color_id", mode="before")
+    @classmethod
+    def _clean_color_id(cls, value: Any) -> str | None:
+        return _normalize_color_id(value)
 
     @field_validator("start_time", mode="after")
     @classmethod
@@ -138,6 +175,7 @@ class ExtractedEvent(BaseModel):
             "club_name": self.club_name.strip(),
             "club_handle": self.club_handle.strip().lstrip("@").lower(),
             "source_post_url": self.source_post_url.strip(),
+            "color_id": self.color_id or "",
         }
         serialized = json.dumps(payload, sort_keys=True, ensure_ascii=False)
         return hashlib.sha256(serialized.encode("utf-8")).hexdigest()

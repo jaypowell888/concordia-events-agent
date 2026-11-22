@@ -54,10 +54,17 @@ class EventStateStore:
                     source_post_id TEXT NOT NULL,
                     title TEXT NOT NULL,
                     start_time TEXT NOT NULL,
-                    updated_at TEXT NOT NULL
+                    updated_at TEXT NOT NULL,
+                    club_handle TEXT
                 )
                 """
             )
+            columns = {
+                row["name"]
+                for row in self._conn.execute("PRAGMA table_info(synced_events)").fetchall()
+            }
+            if "club_handle" not in columns:
+                self._conn.execute("ALTER TABLE synced_events ADD COLUMN club_handle TEXT")
 
     def _ensure_writable(self) -> None:
         if self._read_only:
@@ -120,16 +127,17 @@ class EventStateStore:
                 """
                 INSERT INTO synced_events (
                     fingerprint, google_event_id, content_hash,
-                    source_post_id, title, start_time, updated_at
+                    source_post_id, title, start_time, updated_at, club_handle
                 )
-                VALUES (?, ?, ?, ?, ?, ?, ?)
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?)
                 ON CONFLICT(fingerprint) DO UPDATE SET
                     google_event_id = excluded.google_event_id,
                     content_hash = excluded.content_hash,
                     source_post_id = excluded.source_post_id,
                     title = excluded.title,
                     start_time = excluded.start_time,
-                    updated_at = excluded.updated_at
+                    updated_at = excluded.updated_at,
+                    club_handle = excluded.club_handle
                 """,
                 (
                     event.fingerprint(),
@@ -139,8 +147,43 @@ class EventStateStore:
                     event.title,
                     event.start_time.isoformat(),
                     updated_at,
+                    event.club_handle,
                 ),
             )
+
+    def list_synced_events_with_club(self) -> list[dict[str, Any]]:
+        """List all synced events with resolved club_handle (compatible with legacy DBs and read-only mode)."""
+        try:
+            columns = {
+                row["name"]
+                for row in self._conn.execute("PRAGMA table_info(synced_events)").fetchall()
+            }
+            if "club_handle" in columns:
+                club_expr = "COALESCE(NULLIF(se.club_handle, ''), pp.club_handle, '')"
+            else:
+                club_expr = "COALESCE(pp.club_handle, '')"
+
+            rows = self._conn.execute(
+                f"""
+                SELECT
+                    se.fingerprint,
+                    se.google_event_id,
+                    se.content_hash,
+                    se.source_post_id,
+                    se.title,
+                    se.start_time,
+                    se.updated_at,
+                    {club_expr} AS club_handle
+                FROM synced_events se
+                LEFT JOIN processed_posts pp ON se.source_post_id = pp.post_id
+                ORDER BY se.start_time ASC
+                """
+            ).fetchall()
+        except sqlite3.OperationalError as exc:
+            if self._read_only and "no such table" in str(exc).lower():
+                return []
+            raise
+        return [dict(row) for row in rows]
 
     def close(self) -> None:
         """Close the underlying SQLite connection."""

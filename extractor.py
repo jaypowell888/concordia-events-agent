@@ -666,6 +666,7 @@ class GeminiEventExtractor:
                     club_handle=post.club_handle,
                     source_post_id=post.post_id,
                     source_post_url=post.url,
+                    color_id=post.color_id,
                 )
                 events.append(event)
             except Exception as exc:  # noqa: BLE001
