@@ -1,0 +1,122 @@
+[
+  {
+    "name": "CASA-JMSB",
+    "handle": "casajmsb",
+    "faculty": "JMSB",
+    "source": "manual"
+  },
+  {
+    "name": "JMAS",
+    "handle": "jmasofficial",
+    "faculty": "JMSB",
+    "source": "manual"
+  },
+  {
+    "name": "EngComm",
+    "handle": "engcommofficial",
+    "faculty": "JMSB / Gina Cody",
+    "source": "manual"
+  },
+  {
+    "name": "BIA JMSB",
+    "handle": "biajmsb",
+    "faculty": "JMSB",
+    "source": "manual"
+  },
+  {
+    "name": "Concordia Relay For Life",
+    "handle": "concordiarelay",
+    "faculty": "General",
+    "source": "manual"
+  },
+  {
+    "name": "CBV Institute",
+    "handle": "cbvinstitute",
+    "faculty": "External",
+    "source": "manual"
+  },
+  {
+    "name": "Concordia Real Estate Club",
+    "handle": "concordiarealestateclub",
+    "faculty": "JMSB",
+    "source": "manual"
+  },
+  {
+    "name": "FISA",
+    "handle": "fisajmsb",
+    "faculty": "JMSB",
+    "source": "manual"
+  },
+  {
+    "name": "JMCC",
+    "handle": "jmcconline",
+    "faculty": "JMSB",
+    "source": "manual"
+  },
+  {
+    "name": "REIMI",
+    "handle": "reimijmsb",
+    "faculty": "JMSB",
+    "source": "manual"
+  },
+  {
+    "name": "MCC",
+    "handle": "mcconcordia",
+    "faculty": "JMSB",
+    "source": "manual"
+  },
+  {
+    "name": "QUARCC",
+    "handle": "quarcc.mtl",
+    "faculty": "JMSB",
+    "source": "manual"
+  },
+  {
+    "name": "JMTL",
+    "handle": "jmtl_concordia",
+    "faculty": "JMSB",
+    "source": "manual"
+  },
+  {
+    "name": "JHMA",
+    "handle": "jhmajmsb",
+    "faculty": "JMSB",
+    "source": "manual"
+  },
+  {
+    "name": "JMIBA",
+    "handle": "jmiba_jmsb",
+    "faculty": "JMSB",
+    "source": "manual"
+  },
+  {
+    "name": "JMSM",
+    "handle": "jmsmcommittee",
+    "faculty": "JMSB",
+    "source": "manual"
+  },
+  {
+    "name": "JMUCC",
+    "handle": "jmuccofficial",
+    "faculty": "JMSB",
+    "source": "manual"
+  },
+  {
+    "name": "CASA X",
+    "handle": "jmsbcasax",
+    "faculty": "JMSB",
+    "source": "manual"
+  },
+  {
+    "name": "CASA Cares",
+    "handle": "jmsbcasacares",
+    "faculty": "JMSB",
+    "source": "manual"
+  },
+  {
+    "name": "JMIS",
+    "handle": "jmis.ca",
+    "faculty": "JMSB",
+    "source": "manual"
+  }
+]

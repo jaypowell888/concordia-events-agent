@@ -1,0 +1,68 @@
+name: Daily Concordia Events Sync
+
+on:
+  schedule:
+    # 08:00 AM EST (UTC-5) / 09:00 AM EDT (UTC-4) Montreal time
+    - cron: '0 13 * * *'
+  workflow_dispatch:
+    inputs:
+      lookback_days:
+        description: 'Number of days to look back for Instagram posts'
+        required: false
+        default: '3'
+      dry_run:
+        description: 'Run without writing to Google Calendar or state DB'
+        required: false
+        default: false
+        type: boolean
+
+permissions:
+  contents: write
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python 3.12
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: 'pip'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Run Concordia Events sync
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          APIFY_TOKEN: ${{ secrets.APIFY_TOKEN }}
+          GOOGLE_CALENDAR_ID: ${{ secrets.GOOGLE_CALENDAR_ID }}
+          GOOGLE_SERVICE_ACCOUNT_JSON: ${{ secrets.GOOGLE_SERVICE_ACCOUNT_JSON }}
+          LOOKBACK_DAYS: ${{ github.event.inputs.lookback_days || vars.LOOKBACK_DAYS || '3' }}
+          CLUBS_PATH: my_clubs.json
+          GEMINI_FALLBACK_MODEL: gemini-3.5-flash-lite
+        run: |
+          if [ "${{ github.event.inputs.dry_run }}" = "true" ]; then
+            python main.py --dry-run
+          else
+            python main.py
+          fi
+
+      - name: Persist deduplication state DB
+        if: ${{ github.event.inputs.dry_run != 'true' }}
+        run: |
+          if [ -f state/events.db ]; then
+            git config user.name "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git add state/events.db
+            if ! git diff --cached --quiet; then
+              git commit -m "chore(state): update synced events database [skip ci]"
+              git push
+            fi
+          fi

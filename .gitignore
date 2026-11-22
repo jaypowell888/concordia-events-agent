@@ -1,0 +1,29 @@
+# Environment & credentials
+.env
+.env.*
+!.env.example
+service-account.json
+
+# Virtual environments
+.venv/
+venv/
+ENV/
+
+# Python caches & build artifacts
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+*.egg-info/
+dist/
+build/
+
+# OS & editor files
+.DS_Store
+Thumbs.db
+
+# Cached scrape output (state/events.db is intentionally NOT ignored so
+# GitHub Actions can persist deduplication state across scheduled runs.)
+state/last_scrape.json

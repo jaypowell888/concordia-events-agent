@@ -1,0 +1,914 @@
+[
+  {
+    "name": "Ahscgsa",
+    "handle": "ahscgsa",
+    "faculty": "General",
+    "source": "scraped:www.concordia.ca"
+  },
+  {
+    "name": "Asacconcordia",
+    "handle": "asacconcordia",
+    "faculty": "General",
+    "source": "scraped:www.concordia.ca"
+  },
+  {
+    "name": "Arts and Science Federation of Associations (ASFA)",
+    "handle": "asfaconcordia",
+    "faculty": "Arts & Science",
+    "source": "seed"
+  },
+  {
+    "name": "Ashraeconcordia",
+    "handle": "ashraeconcordia",
+    "faculty": "General",
+    "source": "scraped:www.concordia.ca"
+  },
+  {
+    "name": "Asnconcordia",
+    "handle": "asnconcordia",
+    "faculty": "General",
+    "source": "scraped:www.concordia.ca"
+  },
+  {
+    "name": "Biajmsb",
+    "handle": "biajmsb",
+    "faculty": "General",
+    "source": "scraped:www.concordia.ca"
+  },
+  {
+    "name": "Brasa Concordia",
+    "handle": "brasa_concordia",
+    "faculty": "General",
+    "source": "scraped:www.concordia.ca"
+  },
+  {
+    "name": "BSA Concordia",
+    "handle": "bsa_concordia",
+    "faculty": "General",
+    "source": "scraped:www.concordia.ca"
+  },
+  {
+    "name": "Bscdconcordia",
+    "handle": "bscdconcordia",
+    "faculty": "General",
+    "source": "scraped:www.concordia.ca"
+  },
+  {
+    "name": "Commerce and Administration Students' Association (CASA-JMSB)",
+    "handle": "casajmsb",
+    "faculty": "JMSB",
+    "source": "seed"
+  },
+  {
+    "name": "Cassconcordia",
+    "handle": "cassconcordia",
+    "faculty": "General",
+    "source": "scraped:www.concordia.ca"
+  },
+  {
+    "name": "Castmtl",
+    "handle": "castmtl",
+    "faculty": "General",
+    "source": "scraped:www.concordia.ca"
+  },
+  {
+    "name": "Cbgsa Concordia",
+    "handle": "cbgsa_concordia",
+    "faculty": "General",
+    "source": "scraped:www.concordia.ca"
+  },
+  {
+    "name": "Ccsuconcordia",
+    "handle": "ccsuconcordia",
+    "faculty": "General",
+    "source": "scraped:www.concordia.ca"
+  },
+  {
+    "name": "Ceedconcordiaca",
+    "handle": "ceedconcordiaca",
+    "faculty": "General",
+    "source": "scraped:www.concordia.ca"
+  },
+  {
+    "name": "Centreforgenderadvocacy",
+    "handle": "centreforgenderadvocacy",
+    "faculty": "General",
+    "source": "scraped:www.concordia.ca"
+  },
+  {
+    "name": "Chabadconcordia",
+    "handle": "chabadconcordia",
+    "faculty": "General",
+    "source": "scraped:www.concordia.ca"
+  },
+  {
+    "name": "Chessatconcordia",
+    "handle": "chessatconcordia",
+    "faculty": "General",
+    "source": "scraped:www.concordia.ca"
+  },
+  {
+    "name": "CIM Concordia",
+    "handle": "cim_concordia",
+    "faculty": "General",
+    "source": "scraped:www.concordia.ca"
+  },
+  {
+    "name": "linktr.ee/Clubccas",
+    "handle": "clubccas",
+    "faculty": "General",
+    "source": "scraped:linktr.ee"
+  },
+  {
+    "name": "CMAC CLUB",
+    "handle": "cmac.club",
+    "faculty": "General",
+    "source": "scraped:www.concordia.ca"
+  },
+  {
+    "name": "CODA Concordia",
+    "handle": "coda.concordia",
+    "faculty": "General",
+    "source": "scraped:www.concordia.ca"
+  },
+  {
+    "name": "Concordia Ecsga",
+    "handle": "concordia.ecsga",
+    "faculty": "General",
+    "source": "scraped:www.concordia.ca"
+  },
+  {
+    "name": "Concordia Improv",
+    "handle": "concordia.improv",
+    "faculty": "General",
+    "source": "scraped:www.concordia.ca"
+  },
+  {
+    "name": "Concordia LSA",
+    "handle": "concordia.lsa",
+    "faculty": "General",
+    "source": "scraped:www.concordia.ca"
+  },
+  {
+    "name": "Concordia Tennisclub",
+    "handle": "concordia.tennisclub",
+    "faculty": "General",
+    "source": "scraped:www.concordia.ca"
+  },
+  {
+    "name": "linktr.ee/concordia_naginata_club",
+    "handle": "concordia_naginata_club",
+    "faculty": "General",
+    "source": "scraped:linktr.ee"
+  },
+  {
+    "name": "Concordia Ultimate",
+    "handle": "concordia_ultimate",
+    "faculty": "General",
+    "source": "scraped:www.concordia.ca"
+  },
+  {
+    "name": "Concordia Artificial Intelligence (Concordia AI)",
+    "handle": "concordiaai",
+    "faculty": "Gina Cody",
+    "source": "seed"
+  },
+  {
+    "name": "Concordiabusinessreview",
+    "handle": "concordiabusinessreview",
+    "faculty": "General",
+    "source": "scraped:www.concordia.ca"
+  },
+  {
+    "name": "Concordia Career & Placement Services (CAPS)",
+    "handle": "concordiacaps",
+    "faculty": "General",
+    "source": "seed"
+  },
+  {
+    "name": "Concordiadbc",
+    "handle": "concordiadbc",
+    "faculty": "General",
+    "source": "scraped:www.concordia.ca"
+  },
+  {
+    "name": "Concordiaenggames",
+    "handle": "concordiaenggames",
+    "faculty": "General",
+    "source": "scraped:www.concordia.ca"
+  },
+  {
+    "name": "Concordiaesports",
+    "handle": "concordiaesports",
+    "faculty": "General",
+    "source": "scraped:www.concordia.ca"
+  },
+  {
+    "name": "Concordiafashionbusiness",
+    "handle": "concordiafashionbusiness",
+    "faculty": "General",
+    "source": "scraped:www.concordia.ca"
+  },
+  {
+    "name": "Concordiafilmfestival",
+    "handle": "concordiafilmfestival",
+    "faculty": "General",
+    "source": "scraped:www.concordia.ca"
+  },
+  {
+    "name": "Concordia Game Development (GameDev)",
+    "handle": "concordiagamedev",
+    "faculty": "Gina Cody",
+    "source": "seed"
+  },
+  {
+    "name": "Concordiagames",
+    "handle": "concordiagames",
+    "faculty": "General",
+    "source": "scraped:www.concordia.ca"
+  },
+  {
+    "name": "Concordiahockeyclub",
+    "handle": "concordiahockeyclub",
+    "faculty": "General",
+    "source": "scraped:www.concordia.ca"
+  },
+  {
+    "name": "Concordialoyolacommittee",
+    "handle": "concordialoyolacommittee",
+    "faculty": "General",
+    "source": "scraped:www.concordia.ca"
+  },
+  {
+    "name": "Concordiaoutdoors",
+    "handle": "concordiaoutdoors",
+    "faculty": "General",
+    "source": "scraped:www.concordia.ca"
+  },
+  {
+    "name": "Concordiarealestateclub",
+    "handle": "concordiarealestateclub",
+    "faculty": "General",
+    "source": "scraped:www.concordia.ca"
+  },
+  {
+    "name": "Concordiarelay",
+    "handle": "concordiarelay",
+    "faculty": "General",
+    "source": "scraped:www.concordia.ca"
+  },
+  {
+    "name": "www.instagram.com/concordiart/",
+    "handle": "concordiart",
+    "faculty": "General",
+    "source": "scraped:www.concordia.ca"
+  },
+  {
+    "name": "Concordiasae Racing",
+    "handle": "concordiasae_racing",
+    "faculty": "General",
+    "source": "scraped:www.concordia.ca"
+  },
+  {
+    "name": "Concordiastudentsnightline",
+    "handle": "concordiastudentsnightline",
+    "faculty": "General",
+    "source": "scraped:www.concordia.ca"
+  },
+  {
+    "name": "Concordiatennis",
+    "handle": "concordiatennis",
+    "faculty": "General",
+    "source": "scraped:www.concordia.ca"
+  },
+  {
+    "name": "Coopcultivaction",
+    "handle": "coopcultivaction",
+    "faculty": "General",
+    "source": "scraped:www.concordia.ca"
+  },
+  {
+    "name": "Cpconcordia",
+    "handle": "cpconcordia",
+    "faculty": "General",
+    "source": "scraped:www.concordia.ca"
+  },
+  {
+    "name": "CRSC Concordia",
+    "handle": "crsc_concordia",
+    "faculty": "General",
+    "source": "scraped:www.concordia.ca"
+  },
+  {
+    "name": "Csbda Concordia",
+    "handle": "csbda.concordia",
+    "faculty": "General",
+    "source": "scraped:www.concordia.ca"
+  },
+  {
+    "name": "Cseaconcordia",
+    "handle": "cseaconcordia",
+    "faculty": "General",
+    "source": "scraped:www.concordia.ca"
+  },
+  {
+    "name": "Csmeconcordia",
+    "handle": "csmeconcordia",
+    "faculty": "General",
+    "source": "scraped:www.concordia.ca"
+  },
+  {
+    "name": "Concordia Student Union (CSU)",
+    "handle": "csu_concordia",
+    "faculty": "General",
+    "source": "seed"
+  },
+  {
+    "name": "Csumtl",
+    "handle": "csumtl",
+    "faculty": "General",
+    "source": "scraped:www.concordia.ca"
+  },
+  {
+    "name": "CU Music CLUB",
+    "handle": "cu.music.club",
+    "faculty": "General",
+    "source": "scraped:www.concordia.ca"
+  },
+  {
+    "name": "Cubcaps",
+    "handle": "cubcaps",
+    "faculty": "General",
+    "source": "scraped:www.concordia.ca"
+  },
+  {
+    "name": "linktr.ee/concordiakpopclub",
+    "handle": "cukpopclub",
+    "faculty": "General",
+    "source": "scraped:linktr.ee"
+  },
+  {
+    "name": "Curemontreal",
+    "handle": "curemontreal",
+    "faculty": "General",
+    "source": "scraped:www.concordia.ca"
+  },
+  {
+    "name": "CUSU Concordia",
+    "handle": "cusu_concordia",
+    "faculty": "General",
+    "source": "scraped:www.concordia.ca"
+  },
+  {
+    "name": "Cutam TSA",
+    "handle": "cutam.tsa",
+    "faculty": "General",
+    "source": "scraped:www.concordia.ca"
+  },
+  {
+    "name": "Cutea CLUB",
+    "handle": "cutea_club",
+    "faculty": "General",
+    "source": "scraped:www.concordia.ca"
+  },
+  {
+    "name": "DASA JPEG",
+    "handle": "dasa.jpeg",
+    "faculty": "General",
+    "source": "scraped:www.concordia.ca"
+  },
+  {
+    "name": "District 3 Innovation Hub",
+    "handle": "district3innovation",
+    "faculty": "General",
+    "source": "seed"
+  },
+  {
+    "name": "Dphieconcordia",
+    "handle": "dphieconcordia",
+    "faculty": "General",
+    "source": "scraped:www.concordia.ca"
+  },
+  {
+    "name": "Data Science Society at Concordia (DSSC)",
+    "handle": "dssc.concordia",
+    "faculty": "Gina Cody",
+    "source": "seed"
+  },
+  {
+    "name": "Engineering and Computer Science Association (ECA)",
+    "handle": "ecaconcordia",
+    "faculty": "Gina Cody",
+    "source": "seed"
+  },
+  {
+    "name": "ECON Concordia",
+    "handle": "econ_concordia",
+    "faculty": "General",
+    "source": "scraped:www.concordia.ca"
+  },
+  {
+    "name": "Egyptianassociation",
+    "handle": "egyptianassociation",
+    "faculty": "General",
+    "source": "scraped:www.concordia.ca"
+  },
+  {
+    "name": "Electroconmtl",
+    "handle": "electroconmtl",
+    "faculty": "General",
+    "source": "scraped:www.concordia.ca"
+  },
+  {
+    "name": "Enactus Concordia",
+    "handle": "enactus.concordia",
+    "faculty": "General",
+    "source": "scraped:www.concordia.ca"
+  },
+  {
+    "name": "Enactus Concordia",
+    "handle": "enactusconcordia",
+    "faculty": "JMSB",
+    "source": "seed"
+  },
+  {
+    "name": "Engiqueers Concordia",
+    "handle": "engiqueers.concordia",
+    "faculty": "General",
+    "source": "scraped:www.concordia.ca"
+  },
+  {
+    "name": "Economics Student Association (ESA Concordia)",
+    "handle": "esaconcordia",
+    "faculty": "Arts & Science",
+    "source": "seed"
+  },
+  {
+    "name": "Fine Arts Student Alliance (FASA)",
+    "handle": "fasaconcordia",
+    "faculty": "Fine Arts",
+    "source": "seed"
+  },
+  {
+    "name": "Fasalovesyou",
+    "handle": "fasalovesyou",
+    "faculty": "General",
+    "source": "scraped:www.concordia.ca"
+  },
+  {
+    "name": "Finance and Investment Student Association (FISA)",
+    "handle": "fisajmsb",
+    "faculty": "JMSB",
+    "source": "seed"
+  },
+  {
+    "name": "FSA Concordia",
+    "handle": "fsa.concordia",
+    "faculty": "General",
+    "source": "scraped:www.concordia.ca"
+  },
+  {
+    "name": "GDG Concordia",
+    "handle": "gdg_concordia",
+    "faculty": "General",
+    "source": "scraped:www.concordia.ca"
+  },
+  {
+    "name": "Geograds",
+    "handle": "geograds",
+    "faculty": "General",
+    "source": "scraped:www.concordia.ca"
+  },
+  {
+    "name": "GISA Concordia",
+    "handle": "gisa.concordia",
+    "faculty": "General",
+    "source": "scraped:www.concordia.ca"
+  },
+  {
+    "name": "GLC Concordiauniversity",
+    "handle": "glc.concordiauniversity",
+    "faculty": "General",
+    "source": "scraped:www.concordia.ca"
+  },
+  {
+    "name": "Goldenkeyconcordia",
+    "handle": "goldenkeyconcordia",
+    "faculty": "General",
+    "source": "scraped:www.concordia.ca"
+  },
+  {
+    "name": "Gsaconcordia",
+    "handle": "gsaconcordia",
+    "faculty": "General",
+    "source": "scraped:www.concordia.ca"
+  },
+  {
+    "name": "Gussconcordia",
+    "handle": "gussconcordia",
+    "faculty": "General",
+    "source": "scraped:www.concordia.ca"
+  },
+  {
+    "name": "HackConcordia",
+    "handle": "hackconcordia",
+    "faculty": "Gina Cody",
+    "source": "seed"
+  },
+  {
+    "name": "Heart Forafricaclub",
+    "handle": "heart_forafricaclub",
+    "faculty": "General",
+    "source": "scraped:www.concordia.ca"
+  },
+  {
+    "name": "Hexploitalliance",
+    "handle": "hexploitalliance",
+    "faculty": "General",
+    "source": "scraped:www.concordia.ca"
+  },
+  {
+    "name": "Hillelmontreal",
+    "handle": "hillelmontreal",
+    "faculty": "General",
+    "source": "scraped:www.concordia.ca"
+  },
+  {
+    "name": "Hkapsaconcordia",
+    "handle": "hkapsaconcordia",
+    "faculty": "General",
+    "source": "scraped:www.concordia.ca"
+  },
+  {
+    "name": "HSAC Concordia",
+    "handle": "hsac.concordia",
+    "faculty": "General",
+    "source": "scraped:www.concordia.ca"
+  },
+  {
+    "name": "IEEE Concordia",
+    "handle": "ieee_concordia",
+    "faculty": "General",
+    "source": "scraped:www.concordia.ca"
+  },
+  {
+    "name": "IEEE Concordia",
+    "handle": "ieeeconcordia",
+    "faculty": "Gina Cody",
+    "source": "seed"
+  },
+  {
+    "name": "Iiseconcordiachapter",
+    "handle": "iiseconcordiachapter",
+    "faculty": "General",
+    "source": "scraped:www.concordia.ca"
+  },
+  {
+    "name": "JDLC Concordia",
+    "handle": "jdlc.concordia",
+    "faculty": "General",
+    "source": "scraped:www.concordia.ca"
+  },
+  {
+    "name": "JIC JMSB",
+    "handle": "jic_jmsb",
+    "faculty": "General",
+    "source": "scraped:www.concordia.ca"
+  },
+  {
+    "name": "John Molson Accounting Society (JMAS)",
+    "handle": "jmasjmsb",
+    "faculty": "JMSB",
+    "source": "seed"
+  },
+  {
+    "name": "John Molson Business Technology Management Association (JMBTMA)",
+    "handle": "jmbtma",
+    "faculty": "JMSB",
+    "source": "seed"
+  },
+  {
+    "name": "John Molson Competition Committee (JMCC)",
+    "handle": "jmcc_jmsb",
+    "faculty": "JMSB",
+    "source": "seed"
+  },
+  {
+    "name": "Jmcconline",
+    "handle": "jmcconline",
+    "faculty": "General",
+    "source": "scraped:www.concordia.ca"
+  },
+  {
+    "name": "John Molson Entrepreneurship Society (JMES)",
+    "handle": "jmesconcordia",
+    "faculty": "JMSB",
+    "source": "seed"
+  },
+  {
+    "name": "Jmgsa Concordia",
+    "handle": "jmgsa_concordia",
+    "faculty": "General",
+    "source": "scraped:www.concordia.ca"
+  },
+  {
+    "name": "John Molson Human Resources Association (JMHRA)",
+    "handle": "jmhraconcordia",
+    "faculty": "JMSB",
+    "source": "seed"
+  },
+  {
+    "name": "Jmiba JMSB",
+    "handle": "jmiba_jmsb",
+    "faculty": "General",
+    "source": "scraped:www.concordia.ca"
+  },
+  {
+    "name": "John Molson MBA International Case Competition (JMICC)",
+    "handle": "jmicc_official",
+    "faculty": "JMSB",
+    "source": "seed"
+  },
+  {
+    "name": "John Molson Marketing Association (JSMA / JMMA)",
+    "handle": "jmmaconcordia",
+    "faculty": "JMSB",
+    "source": "seed"
+  },
+  {
+    "name": "Jmmaonline",
+    "handle": "jmmaonline",
+    "faculty": "General",
+    "source": "scraped:www.concordia.ca"
+  },
+  {
+    "name": "Jmsmcommittee",
+    "handle": "jmsmcommittee",
+    "faculty": "General",
+    "source": "scraped:www.concordia.ca"
+  },
+  {
+    "name": "John Molson Undergraduate Case Competition (JMUCC)",
+    "handle": "jmucc",
+    "faculty": "JMSB",
+    "source": "seed"
+  },
+  {
+    "name": "John Molson Women in Business (JMWIB)",
+    "handle": "jmwibconcordia",
+    "faculty": "JMSB",
+    "source": "seed"
+  },
+  {
+    "name": "John Molson Supply Chain and Business Technology Association (JSBA)",
+    "handle": "jsba_jmsb",
+    "faculty": "JMSB",
+    "source": "seed"
+  },
+  {
+    "name": "Jsbajmsb",
+    "handle": "jsbajmsb",
+    "faculty": "General",
+    "source": "scraped:www.concordia.ca"
+  },
+  {
+    "name": "John Molson Sustainable Business Group (JSBG)",
+    "handle": "jsbgconcordia",
+    "faculty": "JMSB",
+    "source": "seed"
+  },
+  {
+    "name": "Jsecjmsb",
+    "handle": "jsecjmsb",
+    "faculty": "General",
+    "source": "scraped:www.concordia.ca"
+  },
+  {
+    "name": "Lasoconcordia",
+    "handle": "lasoconcordia",
+    "faculty": "General",
+    "source": "scraped:www.concordia.ca"
+  },
+  {
+    "name": "Lefrigovert",
+    "handle": "lefrigovert",
+    "faculty": "General",
+    "source": "scraped:www.concordia.ca"
+  },
+  {
+    "name": "Lsaconcordia",
+    "handle": "lsaconcordia",
+    "faculty": "General",
+    "source": "scraped:www.concordia.ca"
+  },
+  {
+    "name": "Mcconcordia",
+    "handle": "mcconcordia",
+    "faculty": "General",
+    "source": "scraped:www.concordia.ca"
+  },
+  {
+    "name": "Medlifeconcordia",
+    "handle": "medlifeconcordia",
+    "faculty": "General",
+    "source": "scraped:www.concordia.ca"
+  },
+  {
+    "name": "Medspecs",
+    "handle": "medspecs",
+    "faculty": "General",
+    "source": "scraped:www.concordia.ca"
+  },
+  {
+    "name": "MSA Concordia",
+    "handle": "msa.concordia",
+    "faculty": "General",
+    "source": "scraped:www.concordia.ca"
+  },
+  {
+    "name": "Musaconcordia",
+    "handle": "musaconcordia",
+    "faculty": "General",
+    "source": "scraped:www.concordia.ca"
+  },
+  {
+    "name": "Nassconcordia",
+    "handle": "nassconcordia",
+    "faculty": "General",
+    "source": "scraped:www.concordia.ca"
+  },
+  {
+    "name": "Organe Concordia",
+    "handle": "organe_concordia",
+    "faculty": "General",
+    "source": "scraped:www.concordia.ca"
+  },
+  {
+    "name": "Pasuconcordia",
+    "handle": "pasuconcordia",
+    "faculty": "General",
+    "source": "scraped:www.concordia.ca"
+  },
+  {
+    "name": "PCC CONC",
+    "handle": "pcc_conc",
+    "faculty": "General",
+    "source": "scraped:www.concordia.ca"
+  },
+  {
+    "name": "PSA CONU",
+    "handle": "psa_conu",
+    "faculty": "General",
+    "source": "scraped:www.concordia.ca"
+  },
+  {
+    "name": "Political Science Student Association (PSSA Concordia)",
+    "handle": "pssaconcordia",
+    "faculty": "Arts & Science",
+    "source": "seed"
+  },
+  {
+    "name": "Qpirgconcordia",
+    "handle": "qpirgconcordia",
+    "faculty": "General",
+    "source": "scraped:www.concordia.ca"
+  },
+  {
+    "name": "Queerconcordia",
+    "handle": "queerconcordia",
+    "faculty": "General",
+    "source": "scraped:www.concordia.ca"
+  },
+  {
+    "name": "Recsportsclub",
+    "handle": "recsportsclub",
+    "faculty": "General",
+    "source": "scraped:linktr.ee"
+  },
+  {
+    "name": "Safconcordia",
+    "handle": "safconcordia",
+    "faculty": "General",
+    "source": "scraped:www.concordia.ca"
+  },
+  {
+    "name": "Sasuconcordia",
+    "handle": "sasuconcordia",
+    "faculty": "General",
+    "source": "scraped:www.concordia.ca"
+  },
+  {
+    "name": "Scpasa Aeeapc",
+    "handle": "scpasa.aeeapc",
+    "faculty": "General",
+    "source": "scraped:www.concordia.ca"
+  },
+  {
+    "name": "SCS Concordia",
+    "handle": "scs.concordia",
+    "faculty": "General",
+    "source": "scraped:www.concordia.ca"
+  },
+  {
+    "name": "Software Engineering and Computer Science Society (SCS)",
+    "handle": "scsconcordia",
+    "faculty": "Gina Cody",
+    "source": "seed"
+  },
+  {
+    "name": "Seizetogether",
+    "handle": "seizetogether",
+    "faculty": "General",
+    "source": "scraped:www.concordia.ca"
+  },
+  {
+    "name": "Selfdefenseclub MTL",
+    "handle": "selfdefenseclub.mtl",
+    "faculty": "General",
+    "source": "scraped:www.concordia.ca"
+  },
+  {
+    "name": "SMSA CONU",
+    "handle": "smsa_conu",
+    "faculty": "General",
+    "source": "scraped:www.concordia.ca"
+  },
+  {
+    "name": "Sophiaconcordia",
+    "handle": "sophiaconcordia",
+    "faculty": "General",
+    "source": "scraped:www.concordia.ca"
+  },
+  {
+    "name": "Space Concordia",
+    "handle": "spaceconcordia",
+    "faculty": "Gina Cody",
+    "source": "seed"
+  },
+  {
+    "name": "SSA Concordia",
+    "handle": "ssa_concordia",
+    "faculty": "General",
+    "source": "scraped:www.concordia.ca"
+  },
+  {
+    "name": "Stsconcordia",
+    "handle": "stsconcordia",
+    "faculty": "General",
+    "source": "scraped:www.concordia.ca"
+  },
+  {
+    "name": "Sustainable Concordia",
+    "handle": "sustainable_concordia",
+    "faculty": "General",
+    "source": "scraped:www.concordia.ca"
+  },
+  {
+    "name": "Swabtheworld CU",
+    "handle": "swabtheworld_cu",
+    "faculty": "General",
+    "source": "scraped:www.concordia.ca"
+  },
+  {
+    "name": "Theconcordianmtl",
+    "handle": "theconcordianmtl",
+    "faculty": "General",
+    "source": "scraped:www.concordia.ca"
+  },
+  {
+    "name": "Thecujah",
+    "handle": "thecujah",
+    "faculty": "General",
+    "source": "scraped:www.concordia.ca"
+  },
+  {
+    "name": "Thepeoplespotato",
+    "handle": "thepeoplespotato",
+    "faculty": "General",
+    "source": "scraped:www.concordia.ca"
+  },
+  {
+    "name": "Vavgallery",
+    "handle": "vavgallery",
+    "faculty": "General",
+    "source": "scraped:www.concordia.ca"
+  },
+  {
+    "name": "Women in Engineering Concordia (WIE)",
+    "handle": "wieconcordia",
+    "faculty": "Gina Cody",
+    "source": "seed"
+  },
+  {
+    "name": "Womeninengineering",
+    "handle": "womeninengineering",
+    "faculty": "General",
+    "source": "scraped:www.concordia.ca"
+  },
+  {
+    "name": "Yiaramag",
+    "handle": "yiaramag",
+    "faculty": "General",
+    "source": "scraped:www.concordia.ca"
+  }
+]
