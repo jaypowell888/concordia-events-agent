@@ -138,5 +138,12 @@
     "faculty": "JMSB",
     "source": "manual",
     "color_id": "9"
+  },
+  {
+    "name": "Concordia SSC",
+    "handle": "concordia_ssc",
+    "faculty": "General",
+    "source": "manual",
+    "color_id": "5"
   }
 ]
